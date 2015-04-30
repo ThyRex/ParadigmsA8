@@ -38,6 +38,12 @@ function cb(response) { // take whatever server says, parse it
    addOptions(parsedvalue);
 }
 
+function cb2(response){
+   alert("The back end server replied: " + response);
+   var parsedvalue = JSON.parse(response);
+   addOptions(parsedvalue);
+}
+
 function addOptions(jsonobj) {
    var folder = document.getElementById("folderList");
    var flist = jsonobj.folders;
@@ -49,6 +55,7 @@ function addOptions(jsonobj) {
       var tmp = flist[i];
       tmp = tmp.split("/").pop();
       option.text = tmp;
+      option.value = tmp.replace(/^.*[\\\/]/, '');
       folder.add(option);
    }
 
@@ -64,12 +71,52 @@ function addOptions(jsonobj) {
    
 }
 
+function update(jsonobj){
+   var folder = document.getElementById("folderList");
+   var flist = jsonobj.folders;
+   for(var i in folder){
+      folder.remove(folder.i);
+   }
+
+   for(var i in flist){
+      var option = document.createElement("option");
+      var tmp = filist[i];
+      tmp = tmp.split("/").pop();
+      option.text = tmp;
+      folder.add(option);
+   }
+
+   var files = document.getElementById("fileList");
+   var filist = jsonobj.files;
+   for(var i in files){
+      files.remove(files.i);
+   }
+
+   for(var i in filist){
+      var option = document.createElement("option");
+      var tmp = filist[i];
+      tmp = tmp.split("/").pop();
+      option.txt = tmp;
+      filist.add(option);
+   }
+}
+
 function makeSendPayload(select){
-   alert("Double Click success!");
+   var folder = document.getElementById("folderList");
+   var length = folder.size;
+   for(var i = 0; i<length; i++){
+      folder.remove(folder.i);
+   }
+
+   var files = document.getElementById("fileList");
+   length = files.size;
+   for(var i = 0; i<length; i++){
+      files.remove(files.i);
+   }
+   httpPost("backend.php", select, cb);
 }
 
 httpPost("backend.php", null, cb);
 
 </script>
-</head>
-</body></html>
+</body></head></html>
