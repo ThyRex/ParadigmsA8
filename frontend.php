@@ -1,5 +1,13 @@
+<?php
+ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
+session_start();
+?>
 <html><head><body>
-<table><tr><td>
+<?php
+echo"Hello, ". $_SESSION['name']."!" . "<br>";
+echo"Your email address is " . $_SESSION['email']."." ."<br>";
+?>
+<br><table><tr><td>
 <b>Folders:</b><br>
 <select id="folderList" size="15" style="width: 280px" ondblclick="makeSendPayload(this.value)">
 </select>
@@ -7,7 +15,7 @@
 <b>Files:</b><br>
 <select id="fileList" size="15" style="width: 280px">
 </select>
-</td></tr></table>
+</td></tr></table><br>
 <script type="text/javascript">
 
 
@@ -27,18 +35,11 @@ function httpPost(url, payload, cb) {
       }
    }
    request.open('post', url, true);
-   request.setRequestHeader('Content-Type',
-      'application/x-www-form-urlencoded');
+   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
    request.send(payload);
 }
 
 function cb(response) { // take whatever server says, parse it
-   alert("The back end server replied: " + response);
-   var parsedvalue = JSON.parse(response);
-   addOptions(parsedvalue);
-}
-
-function cb2(response){
    alert("The back end server replied: " + response);
    var parsedvalue = JSON.parse(response);
    addOptions(parsedvalue);
@@ -55,7 +56,6 @@ function addOptions(jsonobj) {
       var tmp = flist[i];
       tmp = tmp.split("/").pop();
       option.text = tmp;
-      option.value = tmp.replace(/^.*[\\\/]/, '');
       folder.add(option);
    }
 
@@ -69,36 +69,6 @@ function addOptions(jsonobj) {
       files.add(option);
    }
    
-}
-
-function update(jsonobj){
-   var folder = document.getElementById("folderList");
-   var flist = jsonobj.folders;
-   for(var i in folder){
-      folder.remove(folder.i);
-   }
-
-   for(var i in flist){
-      var option = document.createElement("option");
-      var tmp = filist[i];
-      tmp = tmp.split("/").pop();
-      option.text = tmp;
-      folder.add(option);
-   }
-
-   var files = document.getElementById("fileList");
-   var filist = jsonobj.files;
-   for(var i in files){
-      files.remove(files.i);
-   }
-
-   for(var i in filist){
-      var option = document.createElement("option");
-      var tmp = filist[i];
-      tmp = tmp.split("/").pop();
-      option.txt = tmp;
-      filist.add(option);
-   }
 }
 
 function makeSendPayload(select){
@@ -119,4 +89,9 @@ function makeSendPayload(select){
 httpPost("backend.php", null, cb);
 
 </script>
+
+<form name  = "logoutForm" action = "index.php" method = "post">
+   <input type = "submit" name = "exit" value = "Logout" />
+</form>
+
 </body></head></html>
