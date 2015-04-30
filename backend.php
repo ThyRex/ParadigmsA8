@@ -1,12 +1,11 @@
 <?php
 $incoming = file_get_contents('php://input');
+
 if($incoming != null) {
-	$_POST['dir'] = json_decode($incoming);
-	$useThis = $_POST['dir'];
+	$useThis = $incoming;
 }
-	
-if(isset($_POST['dir'])) {
-	$cur_dir = $useThis->dir;
+if(isset($useThis)) {
+	$cur_dir = $useThis;
 }
 else
 	$cur_dir = getcwd();
