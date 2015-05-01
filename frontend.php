@@ -18,7 +18,6 @@ echo"Your email address is " . $_SESSION['email']."." ."<br>";
 </td></tr></table><br>
 <script type="text/javascript">
 
-// var old_dir;
 function httpPost(url, payload, cb) {
    var request = new XMLHttpRequest();
    request.onreadystatechange = function() { // Anonymous function
@@ -42,8 +41,6 @@ function httpPost(url, payload, cb) {
 function cb(response) { // take whatever server says, parse it
    // alert("The back end server replied: " + response);
    var parsedvalue = JSON.parse(response);
-   // old_dir = parsedvalue.loc;
-   // alert(old_dir);
    addOptions(parsedvalue);
 }
 
@@ -92,7 +89,6 @@ function makeSendPayload(select){
       files.remove(files.i);
    }
 
-   // alert(old_dir + "/" + select);
    httpPost("backend.php", select, cb);
 }
 
