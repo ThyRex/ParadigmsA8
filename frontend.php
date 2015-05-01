@@ -18,7 +18,7 @@ echo"Your email address is " . $_SESSION['email']."." ."<br>";
 </td></tr></table><br>
 <script type="text/javascript">
 
-
+// var old_dir;
 function httpPost(url, payload, cb) {
    var request = new XMLHttpRequest();
    request.onreadystatechange = function() { // Anonymous function
@@ -40,8 +40,10 @@ function httpPost(url, payload, cb) {
 }
 
 function cb(response) { // take whatever server says, parse it
-   alert("The back end server replied: " + response);
+   // alert("The back end server replied: " + response);
    var parsedvalue = JSON.parse(response);
+   // old_dir = parsedvalue.loc;
+   // alert(old_dir);
    addOptions(parsedvalue);
 }
 
@@ -50,12 +52,18 @@ function addOptions(jsonobj) {
    var flist = jsonobj.folders;
    var back = document.createElement("option");
    back.text = "..";
+   var temp = jsonobj.dir;
+   back.value = temp.substring(0, temp.lastIndexOf("/"));
+   // alert(temp);
+   // alert(back.value);
    folder.add(back);
+
    for(var i in flist){
       var option = document.createElement("option");
       var tmp = flist[i];
-      tmp = tmp.split("/").pop();
-      option.text = tmp;
+      var tmp2 = tmp.split("/").pop();
+      option.text = tmp2;
+      option.value = tmp;
       folder.add(option);
    }
 
@@ -83,6 +91,8 @@ function makeSendPayload(select){
    for(var i = 0; i<length; i++){
       files.remove(files.i);
    }
+
+   // alert(old_dir + "/" + select);
    httpPost("backend.php", select, cb);
 }
 
